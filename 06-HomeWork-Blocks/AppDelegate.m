@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "Student.h"
 
 @interface AppDelegate ()
 
@@ -16,35 +17,120 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    
+#pragma mark - Easy
+    //    1. В апп делегате создайте блок с без возвращаемой переменной и без параметров и вызовите его.
+    //    2. Создайте блоки с параметрами и передайте туда строку, которую выведите на экран в последствии.
+    //    3. Если вы не определили тип данных для ваших блоков, то сделайте это сейчас и используйте их
+    //    4. Создайте метод который принимает блок и вызывает его и вызовите этот метод.
+    
+    void (^block) (void) = ^ {
+        NSLog(@"я блок с безвозвращаемой переменной из задания ученик");
+    };
+    block();
+    
+    void (^blockWithParametrString) (NSString *) = ^(NSString * string) {
+        NSLog(@"я блок с параметром string-%@", string);
+    };
+    blockWithParametrString(@"parametr string");
+    
+    [self methodWithBlock:^{
+        NSLog(@"я метод который принимает блок");
+    }];
+
+#pragma mark - Student lvl
+//    Студент.
+//    5. Создайте класс студент с проперти имя и фамилия.
+//    6. Создайте в аппделегате 10 разных студентов, пусть у парочки будут одинаковые фамилии.
+//    7. Поместите всех в массив.
+//    8. Используя соответствующий метод сортировки массива (с блоком) отсортируйте массив студентов сначала по фамилии, а если они одинаковы то по имени.
+
+    NSMutableArray *arrayStud = [NSMutableArray new];
+    for (int i = 1; i < 5; i++) {
+        Student *stud = [Student new];
+        char randomLatterName  = arc4random_uniform(3) + 'A';
+        char randomLatterLastName = arc4random_uniform(10) + 'A';
+        stud.name = [NSString stringWithFormat:@"%carray+One+Name", randomLatterName];
+        stud.lastName = [NSString stringWithFormat:@"%carray+One+LastName", randomLatterLastName];
+        [arrayStud addObject:stud];
+    }
+    for (int i = 1; i < 5; i++) {
+        Student * stud2 = [Student new];
+        char randomLatterName  = arc4random_uniform(3) + 'A';
+        char randomLatterLastName = arc4random_uniform(10) + 'A';
+        stud2.name = [NSString stringWithFormat:@"%carray-Two-Name", randomLatterName];
+        stud2.lastName = [NSString stringWithFormat:@"%carray-Two-LastName", randomLatterLastName];
+        [arrayStud addObject:stud2];
+    }
+    for (int i = 1; i < 5; i++) {
+        Student * stud3 = [Student new];
+        char randomLatterName  = arc4random_uniform(3) + 'A';
+        char randomLatterLastName = arc4random_uniform(10) + 'A';
+        stud3.name = [NSString stringWithFormat:@"%carray_Three_Name", randomLatterName];
+        stud3.lastName = [NSString stringWithFormat:@"%carray_ThreeLast_Name", randomLatterLastName];
+        [arrayStud addObject:stud3];
+    }
+//    for (int i = 0; i < arraStud.count; i++) {
+//        Student *string = [arraStud objectAtIndex:i];
+//        NSLog(@"%d, %@ %@", i, string.name, string.lastName);
+//    }
+    
+    
+    NSArray *sortArray = [arrayStud sortedArrayUsingComparator:^NSComparisonResult(id studentOne, id studentTwo) {
+        if ([studentOne lastName] == [studentTwo lastName]) {
+            return [[studentOne name] compare:[studentTwo name]];
+        } else {
+            return [[studentOne lastName] compare:[studentTwo lastName]];
+        }
+    }];
+
+    for (int i = 0; i < sortArray.count; i++) {
+        Student *obj = [sortArray objectAtIndex:i];
+        NSLog(@"%d, name - %@, lastname - %@", i, obj.name, obj.lastName);
+    }
+    
+    
+//    Мастер.
+//    9. Задание из видео. Из урока о делегатах. У пациентов удалите протокол делегат и соответствующее проперти.
+//    10. Добавьте метод принимающий блок когда им станет плохо.
+//    11. Блок должен передавать указатель на самого студента ну и на те параметры, которые были в задании по делегатам.
+//    12. Теперь когда пациентам поплохеет, они должны вызывать блок, а в блоке нужно принимать решения что делать (доктор не нужен делайте все в апп делегате)
+//    
+//    Супермен
+//    13. Познайте истинное предназначение блоков :) Пусть пациентам становится плохо не тогда когда вы их вызываете в цикле(это убрать), а через случайное время 5-15 секунд после создания (используйте специальный метод из урока по селекторам в ините пациента).
+//    14. не забудьте массив пациентов сделать проперти аппделегата, а то все помрут по выходе из функции так и не дождавшись :)
+    
     return YES;
+}
+
+- (void) methodWithBlock: (void (^) (void)) block {
+    block();
 }
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-    // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+
+    
 }
 
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-    // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
 }
 
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+
 }
 
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
 }
 
 
 - (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+
 }
 
 
