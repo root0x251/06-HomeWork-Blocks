@@ -10,4 +10,17 @@
 
 @implementation Student
 
+- (void) notPassedExam { // недобор баллов
+    NSLog(@"%@ не сдал экзамен", self.name);
+}
+
+- (void) retake {   // пересдача
+    NSLog(@"%@, идет на пересдачу", self.name);
+}
+
+- (void) kick {     // исключение
+    NSLog(@"%@, исключен", self.name);
+}
+
+
 @end

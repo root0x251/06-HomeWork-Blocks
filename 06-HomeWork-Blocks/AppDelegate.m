@@ -23,7 +23,6 @@
     //    2. Создайте блоки с параметрами и передайте туда строку, которую выведите на экран в последствии.
     //    3. Если вы не определили тип данных для ваших блоков, то сделайте это сейчас и используйте их
     //    4. Создайте метод который принимает блок и вызывает его и вызовите этот метод.
-    
     void (^block) (void) = ^ {
         NSLog(@"я блок с безвозвращаемой переменной из задания ученик");
     };
@@ -75,36 +74,76 @@
 //        NSLog(@"%d, %@ %@", i, string.name, string.lastName);
 //    }
     
-    
     NSArray *sortArray = [arrayStud sortedArrayUsingComparator:^NSComparisonResult(id studentOne, id studentTwo) {
-        if ([studentOne lastName] == [studentTwo lastName]) {
-            return [[studentOne name] compare:[studentTwo name]];
-        } else {
-            return [[studentOne lastName] compare:[studentTwo lastName]];
-        }
-    }];
-
-    for (int i = 0; i < sortArray.count; i++) {
-        Student *obj = [sortArray objectAtIndex:i];
-        NSLog(@"%d, name - %@, lastname - %@", i, obj.name, obj.lastName);
-    }
+                if ([studentOne lastName] == [studentTwo lastName]) {
+                    return [[studentOne name] compare:[studentTwo name]];
+                } else {
+                    return [[studentOne lastName] compare:[studentTwo lastName]];
+                }
+            }];
+        
+            for (int i = 0; i < sortArray.count; i++) {
+                Student *obj = [sortArray objectAtIndex:i];
+                NSLog(@"%d, name - %@, lastname - %@", i, obj.name, obj.lastName);
+            }
     
-    
+#pragma mark - Master
 //    Мастер.
 //    9. Задание из видео. Из урока о делегатах. У пациентов удалите протокол делегат и соответствующее проперти.
 //    10. Добавьте метод принимающий блок когда им станет плохо.
 //    11. Блок должен передавать указатель на самого студента ну и на те параметры, которые были в задании по делегатам.
 //    12. Теперь когда пациентам поплохеет, они должны вызывать блок, а в блоке нужно принимать решения что делать (доктор не нужен делайте все в апп делегате)
-//    
+    for (Student *stud in arrayStud) {
+        if ([self notPassedExam] == TRUE) {
+            [self methodDelegate:^{
+                [stud retake];
+                if ([self retake] == FALSE) {
+                    [stud kick];
+                } else {
+                    NSLog(@"%@, пересдал", stud.name);
+                }
+            }];
+        } else if ([self notPassedExam] == FALSE) {
+            [self performSelector:@selector(excellence) withObject:stud afterDelay:5.f];
+        }
+    }
+    
+    
+    
+#pragma mark - Superman
 //    Супермен
 //    13. Познайте истинное предназначение блоков :) Пусть пациентам становится плохо не тогда когда вы их вызываете в цикле(это убрать), а через случайное время 5-15 секунд после создания (используйте специальный метод из урока по селекторам в ините пациента).
 //    14. не забудьте массив пациентов сделать проперти аппделегата, а то все помрут по выходе из функции так и не дождавшись :)
     
     return YES;
 }
+- (void) excellence {
+    NSLog(@"qwe");
+}
 
 - (void) methodWithBlock: (void (^) (void)) block {
     block();
+}
+
+// метод принимающий блок
+- (void) methodDelegate: (void (^) (void)) studentBlock {
+    studentBlock();
+}
+
+- (BOOL) retake {   // пересдача
+    BOOL isOk = arc4random() % 2;
+    return isOk;
+}
+//
+- (BOOL) notPassedExam { // пересдача
+    BOOL isOk = arc4random() % 2;
+    return isOk;
+}
+//
+//
+- (BOOL) kick { // исключить
+    BOOL isOk = arc4random() % 2;
+    return isOk;
 }
 
 

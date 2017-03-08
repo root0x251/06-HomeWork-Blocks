@@ -13,4 +13,8 @@
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *lastName;
 
+- (void) notPassedExam; // не сдал экзамен
+- (void) retake;    // пересдача
+- (void) kick;      // исключить
+
 @end
